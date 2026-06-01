@@ -105,6 +105,14 @@ schema:
 
 ## Output
 
+:::tip
+A task's `output.as` shapes the value that flows to the next task. See
+[Data Flow](/docs/concepts/data-flow) for the full model. A workflow returns the
+output of its final task, so shape the returned value with `output.as` on the
+final task. Use `output.schema` to document and validate the workflow
+output shape.
+:::
+
 Documents the structure - and optionally configures the transformations of -
 workflow/task output data.
 
@@ -119,7 +127,7 @@ applying transformations, unless defined otherwise.
 
 | Property | Type | Required | Description |
 | --- | :---: | :---: | --- |
-| schema | [`schema`](#schema) | `no` | The [`schema`](#schema) used to describe and validate raw input data.<br />*Even though the schema is not required, it is strongly encouraged to document it, whenever feasible.* |
+| schema | [`schema`](#schema) | `no` | The [`schema`](#schema) used to describe and validate output data.<br />*Even though the schema is not required, it is strongly encouraged to document it, whenever feasible.* |
 | as | `string`<br />`object` | `no` | A [runtime expression](/docs/dsl/tasks/intro#runtime-expressions), if any, used to filter and/or mutate the workflow/task output. |
 
 ### Examples {/*#output-examples*/}
@@ -141,10 +149,15 @@ output:
 
 ## Export
 
-Certain task needs to set the workflow context to save the task output for later
-usage. Users set the content of the context through a runtime expression. The
-result of the expression is the new value of the context. The expression is
-evaluated against the transformed task output.
+:::tip
+For how `export`, `output` and `$context` move data between tasks, see
+[Data Flow](/docs/concepts/data-flow).
+:::
+
+A task can set the workflow context to save data for later tasks. Users set the
+content of the context through a runtime expression. The result of the
+expression becomes the new value of the context, replacing the previous value.
+The expression is evaluated against the raw task output.
 
 Optionally, the context might have an associated schema which is validated against
 the result of the expression.
